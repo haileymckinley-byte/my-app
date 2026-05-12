@@ -1,33 +1,54 @@
-const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
-
 import { useState } from "react";
+import db from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 import { useQueryClient } from "@tanstack/react-query";
 
-const DEFAULT_CLASSES = ["Math", "English", "Science", "History", "Art", "PE", "Music", "Other"];
+const DEFAULT_CLASSES = [
+  "Math",
+  "English",
+  "Science",
+  "History",
+  "Art",
+  "PE",
+  "Music",
+  "Other",
+];
 
 export default function AssignmentForm({ open, onClose, editingTask }) {
   const queryClient = useQueryClient();
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState(editingTask || {
-    title: "",
-    class_name: "",
-    estimated_minutes: "",
-    due_date: "",
-    timing: "either",
-    priority: "medium",
-    notes: "",
-    status: "todo",
-  });
+  const [form, setForm] = useState(
+    editingTask || {
+      title: "",
+      class_name: "",
+      estimated_minutes: "",
+      due_date: "",
+      timing: "either",
+      priority: "medium",
+      notes: "",
+      status: "todo",
+    },
+  );
 
   const handleChange = (field, value) => {
-    setForm(prev => ({ ...prev, [field]: value }));
+    setForm((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -35,7 +56,9 @@ export default function AssignmentForm({ open, onClose, editingTask }) {
     setSaving(true);
     const data = {
       ...form,
-      estimated_minutes: form.estimated_minutes ? Number(form.estimated_minutes) : undefined,
+      estimated_minutes: form.estimated_minutes
+        ? Number(form.estimated_minutes)
+        : undefined,
     };
     if (editingTask?.id) {
       await db.entities.Assignment.update(editingTask.id, data);
@@ -70,13 +93,19 @@ export default function AssignmentForm({ open, onClose, editingTask }) {
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
               <Label>Class</Label>
-              <Select value={form.class_name} onValueChange={(v) => handleChange("class_name", v)} required>
+              <Select
+                value={form.class_name}
+                onValueChange={(v) => handleChange("class_name", v)}
+                required
+              >
                 <SelectTrigger className="rounded-xl">
                   <SelectValue placeholder="Select class" />
                 </SelectTrigger>
                 <SelectContent>
-                  {DEFAULT_CLASSES.map(c => (
-                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                  {DEFAULT_CLASSES.map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {c}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -88,7 +117,9 @@ export default function AssignmentForm({ open, onClose, editingTask }) {
                 placeholder="30"
                 min={1}
                 value={form.estimated_minutes}
-                onChange={(e) => handleChange("estimated_minutes", e.target.value)}
+                onChange={(e) =>
+                  handleChange("estimated_minutes", e.target.value)
+                }
                 className="rounded-xl"
               />
             </div>
@@ -106,7 +137,10 @@ export default function AssignmentForm({ open, onClose, editingTask }) {
             </div>
             <div className="space-y-2">
               <Label>Priority</Label>
-              <Select value={form.priority} onValueChange={(v) => handleChange("priority", v)}>
+              <Select
+                value={form.priority}
+                onValueChange={(v) => handleChange("priority", v)}
+              >
                 <SelectTrigger className="rounded-xl">
                   <SelectValue />
                 </SelectTrigger>
@@ -121,7 +155,10 @@ export default function AssignmentForm({ open, onClose, editingTask }) {
 
           <div className="space-y-2">
             <Label>When to do it</Label>
-            <Select value={form.timing} onValueChange={(v) => handleChange("timing", v)}>
+            <Select
+              value={form.timing}
+              onValueChange={(v) => handleChange("timing", v)}
+            >
               <SelectTrigger className="rounded-xl">
                 <SelectValue />
               </SelectTrigger>
@@ -144,8 +181,16 @@ export default function AssignmentForm({ open, onClose, editingTask }) {
             />
           </div>
 
-          <Button type="submit" className="w-full rounded-xl" disabled={saving || !form.title || !form.class_name}>
-            {saving ? "Saving..." : editingTask?.id ? "Update" : "Add Assignment"}
+          <Button
+            type="submit"
+            className="w-full rounded-xl"
+            disabled={saving || !form.title || !form.class_name}
+          >
+            {saving
+              ? "Saving..."
+              : editingTask?.id
+                ? "Update"
+                : "Add Assignment"}
           </Button>
         </form>
       </DialogContent>

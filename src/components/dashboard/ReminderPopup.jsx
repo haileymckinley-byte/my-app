@@ -1,7 +1,12 @@
-const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
-
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import db from "@/api/base44Client";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Clock, ArrowRight, HelpCircle } from "lucide-react";
@@ -11,7 +16,7 @@ export default function ReminderPopup({ assignments }) {
   const [task, setTask] = useState(null);
 
   useEffect(() => {
-    const stuckOrUrgent = assignments.filter(a => {
+    const stuckOrUrgent = assignments.filter((a) => {
       if (a.status === "done") return false;
       if (a.status === "stuck") return true;
       if (a.due_date) {
@@ -70,7 +75,9 @@ export default function ReminderPopup({ assignments }) {
         <div className="bg-muted rounded-2xl p-4 my-2">
           <p className="font-medium text-sm">{task.title}</p>
           <div className="flex items-center gap-3 mt-2">
-            <Badge variant="outline" className="text-[10px]">{task.class_name}</Badge>
+            <Badge variant="outline" className="text-[10px]">
+              {task.class_name}
+            </Badge>
             <span className="text-[10px] text-muted-foreground flex items-center gap-1">
               <Clock className="w-3 h-3" /> ~{task.estimated_minutes || "?"}m
             </span>
@@ -78,10 +85,17 @@ export default function ReminderPopup({ assignments }) {
         </div>
 
         <div className="flex gap-2">
-          <Button variant="outline" className="flex-1 rounded-xl" onClick={() => setOpen(false)}>
+          <Button
+            variant="outline"
+            className="flex-1 rounded-xl"
+            onClick={() => setOpen(false)}
+          >
             Later
           </Button>
-          <Button className="flex-1 rounded-xl bg-primary" onClick={handleMarkInProgress}>
+          <Button
+            className="flex-1 rounded-xl bg-primary"
+            onClick={handleMarkInProgress}
+          >
             Start Now <ArrowRight className="w-4 h-4 ml-1" />
           </Button>
         </div>
