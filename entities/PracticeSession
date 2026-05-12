@@ -1,0 +1,42 @@
+{
+  "name": "PracticeSession",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Name of the practice (e.g. Soccer, Band)"
+    },
+    "day_of_week": {
+      "type": "string",
+      "enum": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "description": "Day of the week"
+    },
+    "start_time": {
+      "type": "string",
+      "description": "Start time (e.g. 3:00 PM)"
+    },
+    "end_time": {
+      "type": "string",
+      "description": "End time (e.g. 5:00 PM)"
+    },
+    "is_recurring": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this repeats weekly"
+    }
+  },
+  "required": [
+    "title",
+    "day_of_week",
+    "start_time",
+    "end_time"
+  ]
+}

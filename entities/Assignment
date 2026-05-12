@@ -1,0 +1,61 @@
+{
+  "name": "Assignment",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Name of the assignment"
+    },
+    "class_name": {
+      "type": "string",
+      "description": "The class this assignment belongs to"
+    },
+    "estimated_minutes": {
+      "type": "number",
+      "description": "Estimated time to complete in minutes"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date",
+      "description": "When the assignment is due"
+    },
+    "timing": {
+      "type": "string",
+      "enum": [
+        "before_practice",
+        "after_practice",
+        "either"
+      ],
+      "default": "either",
+      "description": "When to do this relative to practice"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "todo",
+        "in_progress",
+        "stuck",
+        "done"
+      ],
+      "default": "todo",
+      "description": "Current status of the assignment"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "default": "medium"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes or details"
+    }
+  },
+  "required": [
+    "title",
+    "class_name"
+  ]
+}
