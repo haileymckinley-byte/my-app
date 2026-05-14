@@ -1,18 +1,42 @@
-const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
-
 import { Badge } from "@/components/ui/badge";
+import db from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Clock, MoreVertical, CheckCircle2, Play, AlertTriangle, Pencil, Trash2 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Clock,
+  MoreVertical,
+  CheckCircle2,
+  Play,
+  AlertTriangle,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { format, isPast, isToday, isTomorrow } from "date-fns";
 
 const statusConfig = {
-  todo: { label: "To Do", style: "bg-primary/10 text-primary border-primary/20" },
-  in_progress: { label: "In Progress", style: "bg-accent/10 text-accent border-accent/20" },
-  stuck: { label: "Stuck", style: "bg-destructive/10 text-destructive border-destructive/20" },
-  done: { label: "Done", style: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  todo: {
+    label: "To Do",
+    style: "bg-primary/10 text-primary border-primary/20",
+  },
+  in_progress: {
+    label: "In Progress",
+    style: "bg-accent/10 text-accent border-accent/20",
+  },
+  stuck: {
+    label: "Stuck",
+    style: "bg-destructive/10 text-destructive border-destructive/20",
+  },
+  done: {
+    label: "Done",
+    style: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  },
 };
 
 const priorityDots = {
@@ -47,17 +71,27 @@ export default function AssignmentCard({ task, onEdit }) {
   };
 
   return (
-    <div className={`bg-card rounded-2xl border border-border/50 p-4 shadow-sm transition-all duration-200 ${task.status === "done" ? "opacity-60" : ""}`}>
+    <div
+      className={`bg-card rounded-2xl border border-border/50 p-4 shadow-sm transition-all duration-200 ${task.status === "done" ? "opacity-60" : ""}`}
+    >
       <div className="flex items-start gap-3">
-        <div className={`w-2 h-2 rounded-full mt-2 shrink-0 ${priorityDots[task.priority]}`} />
+        <div
+          className={`w-2 h-2 rounded-full mt-2 shrink-0 ${priorityDots[task.priority]}`}
+        />
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
-            <p className={`font-medium text-sm ${task.status === "done" ? "line-through text-muted-foreground" : ""}`}>
+            <p
+              className={`font-medium text-sm ${task.status === "done" ? "line-through text-muted-foreground" : ""}`}
+            >
               {task.title}
             </p>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-7 w-7 shrink-0"
+                >
                   <MoreVertical className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
@@ -77,17 +111,25 @@ export default function AssignmentCard({ task, onEdit }) {
                 <DropdownMenuItem onClick={() => onEdit(task)}>
                   <Pencil className="w-3.5 h-3.5 mr-2" /> Edit
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={deleteTask} className="text-destructive">
+                <DropdownMenuItem
+                  onClick={deleteTask}
+                  className="text-destructive"
+                >
                   <Trash2 className="w-3.5 h-3.5 mr-2" /> Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
           <div className="flex items-center gap-2 mt-2 flex-wrap">
-            <Badge variant="outline" className="text-[10px] px-2 py-0 font-medium rounded-lg">
+            <Badge
+              variant="outline"
+              className="text-[10px] px-2 py-0 font-medium rounded-lg"
+            >
               {task.class_name}
             </Badge>
-            <Badge className={`text-[10px] px-2 py-0 border ${cfg.style} rounded-lg`}>
+            <Badge
+              className={`text-[10px] px-2 py-0 border ${cfg.style} rounded-lg`}
+            >
               {cfg.label}
             </Badge>
             {task.estimated_minutes && (
@@ -96,13 +138,17 @@ export default function AssignmentCard({ task, onEdit }) {
               </span>
             )}
             {dueLabel && (
-              <span className={`text-[10px] font-medium ${isOverdue ? "text-destructive" : "text-muted-foreground"}`}>
+              <span
+                className={`text-[10px] font-medium ${isOverdue ? "text-destructive" : "text-muted-foreground"}`}
+              >
                 {dueLabel}
               </span>
             )}
           </div>
           {task.notes && (
-            <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{task.notes}</p>
+            <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
+              {task.notes}
+            </p>
           )}
         </div>
       </div>

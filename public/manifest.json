@@ -1,0 +1,9 @@
+{
+  "name": "Base44 APP",
+  "short_name": "Base44",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "icons": []
+}

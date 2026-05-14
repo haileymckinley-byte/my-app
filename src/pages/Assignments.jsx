@@ -1,7 +1,6 @@
-const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import db from "@/api/base44Client";
 
 import AssignmentCard from "@/components/assignments/AssignmentCard";
 import AssignmentForm from "@/components/assignments/AssignmentForm";
@@ -19,7 +18,7 @@ export default function Assignments() {
     queryFn: () => db.entities.Assignment.list("-created_date"),
   });
 
-  const filtered = assignments.filter(a => {
+  const filtered = assignments.filter((a) => {
     if (filter === "active") return a.status !== "done";
     if (filter === "done") return a.status === "done";
     if (filter === "stuck") return a.status === "stuck";
@@ -48,17 +47,29 @@ export default function Assignments() {
     <div className="py-6 space-y-5">
       <div className="flex items-center justify-between">
         <h1 className="font-heading text-xl font-bold">Assignments</h1>
-        <Button size="sm" className="rounded-xl gap-1.5" onClick={() => setShowForm(true)}>
+        <Button
+          size="sm"
+          className="rounded-xl gap-1.5"
+          onClick={() => setShowForm(true)}
+        >
           <Plus className="w-4 h-4" /> Add
         </Button>
       </div>
 
       <Tabs value={filter} onValueChange={setFilter}>
         <TabsList className="w-full">
-          <TabsTrigger value="active" className="flex-1 text-xs">Active</TabsTrigger>
-          <TabsTrigger value="stuck" className="flex-1 text-xs">Stuck</TabsTrigger>
-          <TabsTrigger value="done" className="flex-1 text-xs">Done</TabsTrigger>
-          <TabsTrigger value="all" className="flex-1 text-xs">All</TabsTrigger>
+          <TabsTrigger value="active" className="flex-1 text-xs">
+            Active
+          </TabsTrigger>
+          <TabsTrigger value="stuck" className="flex-1 text-xs">
+            Stuck
+          </TabsTrigger>
+          <TabsTrigger value="done" className="flex-1 text-xs">
+            Done
+          </TabsTrigger>
+          <TabsTrigger value="all" className="flex-1 text-xs">
+            All
+          </TabsTrigger>
         </TabsList>
       </Tabs>
 
@@ -66,18 +77,24 @@ export default function Assignments() {
         {filtered.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground text-sm">
-              {filter === "active" ? "No active assignments!" : "Nothing here yet."}
+              {filter === "active"
+                ? "No active assignments!"
+                : "Nothing here yet."}
             </p>
           </div>
         ) : (
-          filtered.map(task => (
+          filtered.map((task) => (
             <AssignmentCard key={task.id} task={task} onEdit={handleEdit} />
           ))
         )}
       </div>
 
       {showForm && (
-        <AssignmentForm open={showForm} onClose={handleClose} editingTask={editingTask} />
+        <AssignmentForm
+          open={showForm}
+          onClose={handleClose}
+          editingTask={editingTask}
+        />
       )}
     </div>
   );

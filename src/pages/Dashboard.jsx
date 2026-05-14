@@ -1,6 +1,5 @@
-const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
-
 import { useQuery } from "@tanstack/react-query";
+import db from "@/api/base44Client";
 
 import QuickStats from "@/components/dashboard/QuickStats";
 import UpcomingTasks from "@/components/dashboard/UpcomingTasks";
@@ -30,8 +29,12 @@ export default function Dashboard() {
   return (
     <div className="py-6 space-y-6">
       <div>
-        <h1 className="font-heading text-2xl font-bold tracking-tight">Tracking Tactics</h1>
-        <p className="text-sm text-muted-foreground mt-0.5">Stay on top of your game — on and off the field.</p>
+        <h1 className="font-heading text-2xl font-bold tracking-tight">
+          Tracking Tactics
+        </h1>
+        <p className="text-sm text-muted-foreground mt-0.5">
+          Stay on top of your game — on and off the field.
+        </p>
       </div>
 
       <QuickStats assignments={assignments} />

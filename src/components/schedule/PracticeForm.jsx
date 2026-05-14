@@ -1,29 +1,49 @@
-const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
-
 import { useState } from "react";
+import db from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 import { useQueryClient } from "@tanstack/react-query";
 
-const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const DAYS = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
 
 export default function PracticeForm({ open, onClose, editingSession }) {
   const queryClient = useQueryClient();
   const [saving, setSaving] = useState(false);
-  const [form, setForm] = useState(editingSession || {
-    title: "",
-    day_of_week: "",
-    start_time: "",
-    end_time: "",
-    is_recurring: true,
-  });
+  const [form, setForm] = useState(
+    editingSession || {
+      title: "",
+      day_of_week: "",
+      start_time: "",
+      end_time: "",
+      is_recurring: true,
+    },
+  );
 
   const handleChange = (field, value) => {
-    setForm(prev => ({ ...prev, [field]: value }));
+    setForm((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -60,13 +80,19 @@ export default function PracticeForm({ open, onClose, editingSession }) {
           </div>
           <div className="space-y-2">
             <Label>Day of the Week</Label>
-            <Select value={form.day_of_week} onValueChange={(v) => handleChange("day_of_week", v)} required>
+            <Select
+              value={form.day_of_week}
+              onValueChange={(v) => handleChange("day_of_week", v)}
+              required
+            >
               <SelectTrigger className="rounded-xl">
                 <SelectValue placeholder="Select day" />
               </SelectTrigger>
               <SelectContent>
-                {DAYS.map(d => (
-                  <SelectItem key={d} value={d}>{d}</SelectItem>
+                {DAYS.map((d) => (
+                  <SelectItem key={d} value={d}>
+                    {d}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -93,8 +119,16 @@ export default function PracticeForm({ open, onClose, editingSession }) {
               />
             </div>
           </div>
-          <Button type="submit" className="w-full rounded-xl" disabled={saving || !form.title || !form.day_of_week}>
-            {saving ? "Saving..." : editingSession?.id ? "Update" : "Add Practice"}
+          <Button
+            type="submit"
+            className="w-full rounded-xl"
+            disabled={saving || !form.title || !form.day_of_week}
+          >
+            {saving
+              ? "Saving..."
+              : editingSession?.id
+                ? "Update"
+                : "Add Practice"}
           </Button>
         </form>
       </DialogContent>
