@@ -30,7 +30,7 @@ export default function Dashboard() {
     <div className="py-6 space-y-6">
       <div>
         <h1 className="font-heading text-2xl font-bold tracking-tight">
-          Tracking Tactics
+          Tracking practice
         </h1>
         <p className="text-sm text-muted-foreground mt-0.5">
           Stay on top of your game — on and off the field.
