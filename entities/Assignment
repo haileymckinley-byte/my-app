@@ -34,7 +34,7 @@
       "enum": [
         "todo",
         "in_progress",
-        "stuck",
+        "need help",
         "done"
       ],
       "default": "todo",
